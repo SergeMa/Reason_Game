@@ -156,7 +156,7 @@ void ACharacter_Base::Weapon_Disarm_Attach()
 	if (Weapon == nullptr)	return;
 
 	ReturnMoveSpeed();
-	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Weapon->SocketDisarmName);
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, Weapon->SocketDisarmName);
 }
 
 void ACharacter_Base::Weapon_Equip_Attach()
@@ -164,7 +164,7 @@ void ACharacter_Base::Weapon_Equip_Attach()
 	if (Weapon == nullptr)	return;
 
 	ReturnMoveSpeed();
-	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, Weapon->SocketEquipName);
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, Weapon->SocketEquipName);
 }
 
 void ACharacter_Base::NullifyWalkSpeed()

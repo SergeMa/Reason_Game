@@ -61,13 +61,13 @@ void APlayerCharacter::Weapon_Equip()
 	
 	if (Weapon == nullptr || GetCharacterMovement()->IsFalling() || Weapon->GetWeaponType() == EWeaponType::WT_None) return;
 	
-	if (WeaponTypeEquipped == Weapon->GetWeaponType())
-	{
-		SpringArm->AddRelativeLocation(FVector(0, 20, 0));
-	}
-	else
+	if (WeaponTypeEquipped == Weapon->GetWeaponType()) //Weapon is being Disarmed
 	{
 		SpringArm->AddRelativeLocation(FVector(0, -20, 0));
+	}
+	else //Weapon is being Equipped
+	{
+		SpringArm->AddRelativeLocation(FVector(0, 20, 0));
 	}
 	
 	Super::Weapon_Equip();
@@ -76,11 +76,10 @@ void APlayerCharacter::Weapon_Equip()
 void APlayerCharacter::DropWeapon()
 {
 	if (!IsDead() && (!Weapon || bIsAttacking || GetCharacterMovement()->MaxWalkSpeed == 0))	return;
-
 	
 	if (WeaponTypeEquipped != EWeaponType::WT_None)
 	{
-		SpringArm->AddRelativeLocation(FVector(20, 0, 0));
+		SpringArm->AddRelativeLocation(FVector(0, -20, 0));
 	}
 	
 	Super::DropWeapon();
