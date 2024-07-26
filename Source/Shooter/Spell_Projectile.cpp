@@ -7,6 +7,7 @@
 #include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
 #include "Character_Base.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 ASpell_Projectile::ASpell_Projectile()
@@ -18,6 +19,14 @@ ASpell_Projectile::ASpell_Projectile()
 	RootComponent = BoxCollider;
 	SpellVisuals = CreateDefaultSubobject<UParticleSystemComponent>("Visuals");
 	SpellVisuals->SetupAttachment(BoxCollider);
+
+	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("Projectile movement comp");
+	ProjectileMovementComponent->UpdatedComponent = BoxCollider;
+	ProjectileMovementComponent->InitialSpeed = 1000.f;
+	ProjectileMovementComponent->MaxSpeed = 1000.f;
+	ProjectileMovementComponent->bRotationFollowsVelocity = true;
+	ProjectileMovementComponent->bShouldBounce = false;
+	ProjectileMovementComponent->ProjectileGravityScale = 0.0f;
 
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ASpell_Projectile::OnCollisionEnter);
 }
@@ -37,6 +46,7 @@ void ASpell_Projectile::OnCollisionEnter(UPrimitiveComponent* OverlappedComp, AA
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpellHitVisual, GetActorTransform());
 	}
 
+	Destroy();
 }
 
 void ASpell_Projectile::DealDamage(ACharacter_Base* Victim)

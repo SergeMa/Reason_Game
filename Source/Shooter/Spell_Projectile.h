@@ -8,6 +8,7 @@
 
 class ACharacter_Base;
 class UParticleSystemComponent;
+class UProjectileMovementComponent;
 
 UCLASS()
 class SHOOTER_API ASpell_Projectile : public AActor
@@ -27,6 +28,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* SpellVisuals;
+
+	UPROPERTY(EditAnywhere)
+	UProjectileMovementComponent* ProjectileMovementComponent;
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* SpellHitVisual;
