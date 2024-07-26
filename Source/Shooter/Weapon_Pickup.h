@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "IInteractable.h"
 #include "GameFramework/Actor.h"
-#include "Components/BoxComponent.h"
 #include "Weapon_Pickup.generated.h"
 
 class AWeapon_Base;

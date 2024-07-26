@@ -3,6 +3,7 @@
 
 #include "Weapon_Pickup.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/BoxComponent.h"
 #include "Weapon_Base.h"
 
 // Sets default values

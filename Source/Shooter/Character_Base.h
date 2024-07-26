@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Weapons")
 	TSubclassOf<AWeapon_Base> Weapon_Class;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapons")
 	bool bIsAttacking = false;
 
 	UFUNCTION(BlueprintCallable)
@@ -67,7 +67,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	float Health = 1;
 
-	UPROPERTY(EditAnywhere, Category = "Weapons")
+	UPROPERTY(VisibleAnywhere, Category = "Weapons")
 	AWeapon_Base* Weapon;
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapons")
