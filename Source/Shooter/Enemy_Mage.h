@@ -9,9 +9,14 @@
 /**
  * 
  */
+class ASpell_Base;
+
 UCLASS()
 class SHOOTER_API AEnemy_Mage : public AEnemy_Base
 {
 	GENERATED_BODY()
 	
+protected:
+	List<TSubclassOf<ASpell_Base>> KnownSpells;
+
 };
