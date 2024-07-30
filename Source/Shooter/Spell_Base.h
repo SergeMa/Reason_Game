@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ESpellType.h"
 #include "Spell_Base.generated.h"
 
 UCLASS()
@@ -23,13 +24,16 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable, Category = "Spell")
+	UFUNCTION(BlueprintCallable)
 	virtual void CastSpell();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spell")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString SpellName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spell")
-	float Cooldown = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ESpellType SpellType = ESpellType::None;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ManaCost = 1;
 
 };
