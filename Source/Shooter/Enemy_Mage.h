@@ -16,27 +16,28 @@ UCLASS()
 class SHOOTER_API AEnemy_Mage : public AEnemy_Base
 {
 	GENERATED_BODY()
-	
+
 protected:
-	UPROPERTY(EditAnywhere)
-	float ManaAmount = 30;
-
-	UPROPERTY(EditAnywhere)
-	float ManaRegenegation = 0.5f;
-
-	UPROPERTY(EditAnywhere)
-	ASpell_Base* CurrentChosenSpell;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<ASpell_Base*> KnownSpells;
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(VisibleAnywhere)
-	bool isCastingSpell = false;
+	virtual void Tick(float DeltaTime) override;
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spell Casting")
+	TArray<TSubclassOf<ASpell_Base>> KnownSpells;
 
-	UFUNCTION(BlueprintPure)
-	ASpell_Base* GetCurrentChosenSpell();
+	UPROPERTY(EditAnywhere, Category = "Spell Casting")
+	float MaxManaAmount = 30;
 
+	UPROPERTY(VisibleAnywhere, Category = "Spell Casting")
+	float CurrentManaAmount = MaxManaAmount;
+
+	UPROPERTY(EditAnywhere, Category = "Spell Casting")
+	float ManaRegenegation = 0.5f;
+
+public:
 	UFUNCTION(BlueprintCallable)
 	void SetCurrentChosenSpellOfType(ESpellType TypeOfSpell);
 

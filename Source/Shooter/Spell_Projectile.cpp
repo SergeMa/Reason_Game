@@ -27,18 +27,21 @@ ASpell_Projectile::ASpell_Projectile()
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
 	ProjectileMovementComponent->bShouldBounce = false;
 	ProjectileMovementComponent->ProjectileGravityScale = 0.0f;
-
-	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ASpell_Projectile::OnCollisionEnter);
 }
 
 // Called when the game starts or when spawned
 void ASpell_Projectile::BeginPlay()
 {
 	Super::BeginPlay();
+	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ASpell_Projectile::OnCollisionEnter);
 }
 
 void ASpell_Projectile::OnCollisionEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (!CasterCharacter) return;
+
+	if (CasterCharacter && OtherActor == CasterCharacter) return;
+
 	if (ACharacter_Base* HitChar = Cast<ACharacter_Base>(OtherActor)) {
 		DealDamage(HitChar);
 	}
@@ -51,11 +54,11 @@ void ASpell_Projectile::OnCollisionEnter(UPrimitiveComponent* OverlappedComp, AA
 
 void ASpell_Projectile::DealDamage(ACharacter_Base* Victim)
 {
-	if (!OwnerCharacter) return;
+	if (!CasterCharacter) return;
 
 	FDamageEvent DamageEvent;
 
-	Victim->TakeDamage(Damage, DamageEvent, OwnerCharacter->GetController(), this);
+	Victim->TakeDamage(Damage, DamageEvent, CasterCharacter->GetController(), this);
 }
 
 // Called every frame

@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "ESpellType.h"
+#include "Weapon_Base.h"
 #include "Spell_Base.generated.h"
 
+class ASpell_Projectile;
+
 UCLASS()
-class SHOOTER_API ASpell_Base : public AActor
+class SHOOTER_API ASpell_Base : public AWeapon_Base
 {
 	GENERATED_BODY()
 	
@@ -24,8 +26,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere)
+	class UParticleSystemComponent* SpellParticles;
+
 	UFUNCTION(BlueprintCallable)
-	virtual void CastSpell();
+	virtual ASpell_Projectile* CastSpell();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString SpellName;

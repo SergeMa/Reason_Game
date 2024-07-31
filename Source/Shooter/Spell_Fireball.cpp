@@ -4,18 +4,20 @@
 #include "Spell_Fireball.h"
 #include "Spell_Projectile.h"
 #include "Kismet/GameplayStatics.h"
+#include "Character_Base.h"
 
-void ASpell_Fireball::CastSpell()
+ASpell_Projectile* ASpell_Fireball::CastSpell()
 {
-    if (FireballProjectile)
-    {
-        FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 100.0f;
-        FRotator SpawnRotation = GetActorRotation();
+    if (!FireballProjectile) return nullptr;
 
-        FActorSpawnParameters SpawnParams;
-        SpawnParams.Owner = this;
-        SpawnParams.Instigator = GetInstigator();
+    FVector SpawnLocation = GetActorLocation();
+    FRotator SpawnRotation = GetOwner()->GetActorRotation();
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.Owner = GetOwner();
+    SpawnParams.Instigator = GetOwner()->GetInstigator();
 
-        GetWorld()->SpawnActor<ASpell_Projectile>(FireballProjectile, SpawnLocation, SpawnRotation, SpawnParams);
-    }
+    ASpell_Projectile* Projectile = GetWorld()->SpawnActor<ASpell_Projectile>(FireballProjectile, SpawnLocation, SpawnRotation, SpawnParams);
+    Projectile->CasterCharacter = Cast<ACharacter_Base>(GetOwner());
+
+    return Projectile;
 }

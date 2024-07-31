@@ -4,22 +4,38 @@
 #include "Enemy_Mage.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Spell_Base.h"
+#include "Spell_Projectile.h"
 
-ASpell_Base* AEnemy_Mage::GetCurrentChosenSpell()
+void AEnemy_Mage::BeginPlay()
 {
-	return CurrentChosenSpell;
+	Super::BeginPlay();
+
+	if (!Weapon_Class && !KnownSpells.IsEmpty())
+	{
+		Weapon = GetWorld()->SpawnActor<AWeapon_Base>(KnownSpells[0]);
+		Weapon->SetOwner(this);
+	}
+	Weapon_Equip_Attach();
+	Weapon_Equip();
+}
+
+void AEnemy_Mage::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (CurrentManaAmount < MaxManaAmount)
+	{
+		CurrentManaAmount += ManaRegenegation * DeltaTime;
+	}
 }
 
 void AEnemy_Mage::SetCurrentChosenSpellOfType(ESpellType TypeOfSpell)
 {
 	if (KnownSpells.Num() == 0) return;
 
-	for(ASpell_Base* SpellToSet : KnownSpells)
+	for(TSubclassOf<ASpell_Base> SpellToSet : KnownSpells)
 	{
-		if (SpellToSet->SpellType == TypeOfSpell)
-		{
-			CurrentChosenSpell = SpellToSet;
-		}
+		
 	}
 }
 
@@ -27,18 +43,20 @@ void AEnemy_Mage::SetCurrentChosenSpellOfName(FString SpellName)
 {
 	if (KnownSpells.Num() == 0) return;
 
-	for (ASpell_Base* SpellToSet : KnownSpells)
+	for (TSubclassOf<ASpell_Base> SpellToSet : KnownSpells)
 	{
-		if (SpellToSet->SpellName == SpellName)
-		{
-			CurrentChosenSpell = SpellToSet;
-		}
+
 	}
 }
 
 void AEnemy_Mage::CastSpell()
 {
-	if (CurrentChosenSpell == nullptr || isCastingSpell || bIsAttacking || GetCharacterMovement()->IsFalling() || ManaAmount < CurrentChosenSpell->ManaCost) return;
+	ASpell_Base* SpellWeapon = Cast<ASpell_Base>(Weapon);
+	if (SpellWeapon == nullptr || bIsAttacking || GetCharacterMovement()->IsFalling() || CurrentManaAmount < SpellWeapon->ManaCost) return;
 
-	CurrentChosenSpell->CastSpell();
+	ASpell_Projectile* SpellProjectile = SpellWeapon->CastSpell();
+	if (SpellProjectile)
+	{
+		SpellProjectile->CasterCharacter = this;
+	}
 }

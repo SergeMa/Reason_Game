@@ -45,7 +45,7 @@ void ACharacter_Base::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Weapon && CastChecked<AWeapon_Melee>(Weapon) && bIsAttacking)
+	if (Weapon && Cast<AWeapon_Melee>(Weapon) && bIsAttacking)
 	{
 		Weapon->HandleCollision();
 	}
@@ -107,7 +107,7 @@ void ACharacter_Base::Interact()
 void ACharacter_Base::DropWeapon()
 {
 
-	if (!IsDead() && (!Weapon || bIsAttacking || GetCharacterMovement()->MaxWalkSpeed == 0))	return;
+	if (IsDead() && (!Weapon || bIsAttacking || GetCharacterMovement()->MaxWalkSpeed == 0))	return;
 
 	if (WeaponTypeEquipped != EWeaponType::WT_None)
 	{
