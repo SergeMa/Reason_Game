@@ -45,7 +45,7 @@ protected:
 	void DealDamage(ACharacter_Base* Victim);
 
 public:	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	ACharacter_Base* CasterCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite);
