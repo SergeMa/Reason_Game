@@ -42,13 +42,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsDead();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void Weapon_Attack();
 
 	UFUNCTION()
 	virtual void Weapon_Equip();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	virtual void DropWeapon();
 
 	UFUNCTION(BlueprintCallable)

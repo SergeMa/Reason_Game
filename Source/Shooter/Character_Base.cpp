@@ -88,7 +88,10 @@ void ACharacter_Base::Weapon_Equip()
 		WeaponTypeEquipped = Weapon->GetWeaponType();
 	}
 
-	NullifyWalkSpeed();
+	if (WeaponTypeEquipped != EWeaponType::WT_Magic)
+	{
+		NullifyWalkSpeed();
+	}
 }
 
 void ACharacter_Base::Weapon_Attack()

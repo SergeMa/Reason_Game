@@ -52,7 +52,7 @@ void AEnemy_Mage::SetCurrentChosenSpellOfName(FString SpellName)
 void AEnemy_Mage::CastSpell()
 {
 	ASpell_Base* SpellWeapon = Cast<ASpell_Base>(Weapon);
-	if (SpellWeapon == nullptr || bIsAttacking || GetCharacterMovement()->IsFalling() || CurrentManaAmount < SpellWeapon->ManaCost) return;
+	if (SpellWeapon == nullptr || GetCharacterMovement()->IsFalling() || CurrentManaAmount < SpellWeapon->ManaCost) return;
 
 	ASpell_Projectile* SpellProjectile = SpellWeapon->CastSpell();
 	if (SpellProjectile)
