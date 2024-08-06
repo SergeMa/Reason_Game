@@ -14,9 +14,8 @@ void AEnemy_Mage::BeginPlay()
 	{
 		Weapon = GetWorld()->SpawnActor<AWeapon_Base>(KnownSpells[0]);
 		Weapon->SetOwner(this);
+		Weapon_Disarm_Attach();
 	}
-	Weapon_Equip_Attach();
-	Weapon_Equip();
 }
 
 void AEnemy_Mage::Tick(float DeltaTime)
@@ -54,9 +53,5 @@ void AEnemy_Mage::CastSpell()
 	ASpell_Base* SpellWeapon = Cast<ASpell_Base>(Weapon);
 	if (SpellWeapon == nullptr || GetCharacterMovement()->IsFalling() || CurrentManaAmount < SpellWeapon->ManaCost) return;
 
-	ASpell_Projectile* SpellProjectile = SpellWeapon->CastSpell();
-	if (SpellProjectile)
-	{
-		SpellProjectile->CasterCharacter = this;
-	}
+	SpellWeapon->CastSpell();
 }

@@ -39,7 +39,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	AActor* GetAttackTarget();
 
-private:
+protected:
 	UPROPERTY(VisibleAnywhere)
 	AActor* CurrentAttackTarget;
 

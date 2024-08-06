@@ -17,7 +17,7 @@ class SHOOTER_API ASpell_Fireball : public ASpell_Base
 	GENERATED_BODY()
 	
 protected:
-	ASpell_Projectile* CastSpell();
+	void CastSpell();
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ASpell_Projectile> FireballProjectile;

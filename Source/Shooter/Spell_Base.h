@@ -30,7 +30,7 @@ public:
 	class UParticleSystemComponent* SpellParticles;
 
 	UFUNCTION(BlueprintCallable)
-	virtual ASpell_Projectile* CastSpell();
+	virtual void CastSpell();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString SpellName;

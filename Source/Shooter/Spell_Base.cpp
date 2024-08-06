@@ -28,9 +28,9 @@ void ASpell_Base::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-ASpell_Projectile* ASpell_Base::CastSpell()
+void ASpell_Base::CastSpell()
 {
 	UE_LOG(LogTemp, Error, TEXT("No implementation for CastSpell given!"));
-	return nullptr;
+	return;
 }
 

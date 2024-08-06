@@ -34,7 +34,6 @@ void AEnemy_Base_Controller::OnPossess(APawn* InPawn)
 		PerceptionComp->OnPerceptionUpdated.AddDynamic(this, &AEnemy_Base_Controller::OnPerceptionUpdated);
 	}
 	SetStateAsPassive();
-
 }
 
 void AEnemy_Base_Controller::Tick(float DeltaSeconds)
