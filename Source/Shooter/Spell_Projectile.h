@@ -32,6 +32,12 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* SpellVisuals;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float Damage;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ACharacter_Base* CasterCharacter;
+
 	UPROPERTY(EditAnywhere)
 	UProjectileMovementComponent* ProjectileMovementComponent;
 
@@ -44,7 +50,7 @@ protected:
 	UFUNCTION()
 	void DealDamage(ACharacter_Base* Victim);
 
-public:	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	ACharacter_Base* CasterCharacter;
+public:
+	UFUNCTION()
+	void InitializeProjectile(ACharacter_Base* CasterCharacterInput, float DamageInput);
 };

@@ -30,12 +30,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EWeaponType WeaponType;
 
-	TSet<AActor*> HitActors;
-
-public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Damage;
 
+	TSet<AActor*> HitActors;
+
+public:
 	UFUNCTION(BlueprintPure)
 	USkeletalMeshComponent* GetWeaponMesh() const;
 

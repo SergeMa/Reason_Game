@@ -17,5 +17,5 @@ void ASpell_Fireball::CastSpell()
     SpawnParams.Instigator = GetOwner()->GetInstigator();
 
     ASpell_Projectile* Projectile = GetWorld()->SpawnActor<ASpell_Projectile>(FireballProjectile, SpawnLocation, SpawnRotation, SpawnParams);
-    Projectile->CasterCharacter = Cast<ACharacter_Base>(GetOwner());
+    Projectile->InitializeProjectile(Cast<ACharacter_Base>(GetOwner()), Damage);
 }

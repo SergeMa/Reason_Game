@@ -55,12 +55,16 @@ void ASpell_Projectile::OnCollisionEnter(UPrimitiveComponent* OverlappedComp, AA
 
 void ASpell_Projectile::DealDamage(ACharacter_Base* Victim)
 {
-	float Damage = Cast<ASpell_Base>(GetOwner())->Damage;
-	if (!CasterCharacter || Damage == NULL) return;
+	if (!CasterCharacter) return;
 
 	FDamageEvent DamageEvent;
-
 	Victim->TakeDamage(Damage, DamageEvent, CasterCharacter->GetController(), this);
+}
+
+void ASpell_Projectile::InitializeProjectile(ACharacter_Base* CasterCharacterInput, float DamageInput)
+{
+	Damage = DamageInput;
+	CasterCharacter = CasterCharacterInput;
 }
 
 // Called every frame
