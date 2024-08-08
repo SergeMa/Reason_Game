@@ -47,7 +47,4 @@ protected:
 public:	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	ACharacter_Base* CasterCharacter;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite);
-	float Damage = 10;
 };

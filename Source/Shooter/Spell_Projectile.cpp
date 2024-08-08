@@ -7,6 +7,7 @@
 #include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
 #include "Character_Base.h"
+#include "Spell_Base.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
@@ -54,7 +55,8 @@ void ASpell_Projectile::OnCollisionEnter(UPrimitiveComponent* OverlappedComp, AA
 
 void ASpell_Projectile::DealDamage(ACharacter_Base* Victim)
 {
-	if (!CasterCharacter) return;
+	float Damage = Cast<ASpell_Base>(GetOwner())->Damage;
+	if (!CasterCharacter || Damage == NULL) return;
 
 	FDamageEvent DamageEvent;
 

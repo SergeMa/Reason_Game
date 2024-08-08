@@ -25,9 +25,6 @@ protected:
 	USceneComponent* Root;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Damage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* WeaponMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -36,6 +33,9 @@ protected:
 	TSet<AActor*> HitActors;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Damage;
+
 	UFUNCTION(BlueprintPure)
 	USkeletalMeshComponent* GetWeaponMesh() const;
 
