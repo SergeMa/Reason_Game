@@ -11,7 +11,7 @@ void ASpell_Fireball::CastSpell()
     if (!FireballProjectile) return;
 
     FVector SpawnLocation = GetActorLocation();
-    FRotator SpawnRotation = GetOwner()->GetActorRotation();
+    FRotator SpawnRotation = GetActorRotation();
     FActorSpawnParameters SpawnParams;
     SpawnParams.Owner = GetOwner();
     SpawnParams.Instigator = GetOwner()->GetInstigator();
