@@ -33,6 +33,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	class USplineComponent* PatrolPath;
 
+	UPROPERTY(EditAnywhere)
+	bool ShouldGoFromFirstIndex = false;
+
 	UPROPERTY(VisibleAnywhere)
 	int PatrolIndex = 0;
 
