@@ -34,16 +34,16 @@ void AAI_PatrolRoute::IncrementPatrolRoute()
 
 	if (PatrolIndex >= PatrolPath->GetNumberOfSplinePoints())
 	{
-		if (ShouldGoFromFirstIndex)
+		if (PatrolPath->IsClosedLoop())
 		{
 			PatrolIndex = 0;
 		}
-		else 
+		else
 		{
 			PatrolDirection = -1;
 		}
 	}
-	else if(PatrolIndex <= 0 && !ShouldGoFromFirstIndex)
+	else if(PatrolIndex < 0 && !PatrolPath->IsClosedLoop())
 	{
 		PatrolDirection = 1;
 	}
