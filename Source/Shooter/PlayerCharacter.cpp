@@ -150,6 +150,18 @@ void APlayerCharacter::SwitchToRun()
 	SetMoveSpeed(ECharacterMovementSpeed::Run);
 }
 
+void APlayerCharacter::SwitchCameraLength()
+{
+	float SpringArmLength = SpringArm->TargetArmLength;
+	if (SpringArmLength == 0) {
+		SpringArm->TargetArmLength = SpringArmExtendedLength;
+	}
+	else
+	{
+		SpringArm->TargetArmLength = 0;
+	}
+}
+
 void APlayerCharacter::Interact()
 {
 	if (IIInteractable* Interactable = Cast<IIInteractable>(CheckForInteractable()))

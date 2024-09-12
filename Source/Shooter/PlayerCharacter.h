@@ -38,13 +38,16 @@ protected:
 	virtual void SetMoveSpeed(ECharacterMovementSpeed MoveSpeedToSet);
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Aditional components")
 	class USphereComponent* CameraHolder;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Aditional components")
 	class USpringArmComponent* SpringArm;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Aditional components")
+	float SpringArmExtendedLength = 350.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Aditional components")
 	class UCameraComponent* Camera;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -87,6 +90,9 @@ private:
 
 	UFUNCTION()
 	void SwitchToRun();
+
+	UFUNCTION(BlueprintCallable)
+	void SwitchCameraLength();
 
 	void Interact() override;
 };

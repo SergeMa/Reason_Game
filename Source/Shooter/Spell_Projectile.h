@@ -26,10 +26,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxCollider;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	UParticleSystemComponent* SpellVisuals;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

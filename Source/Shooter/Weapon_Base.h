@@ -24,10 +24,10 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USkeletalMeshComponent* WeaponMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	EWeaponType WeaponType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -54,10 +54,10 @@ public:
 	UFUNCTION()
 	virtual void HandleCollision();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	FName SocketEquipName;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	FName SocketDisarmName;
 
 	AController* GetOwnerController();

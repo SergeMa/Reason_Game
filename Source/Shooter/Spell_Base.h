@@ -26,16 +26,16 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	class UParticleSystemComponent* SpellParticles;
 
 	UFUNCTION(BlueprintCallable)
 	virtual void CastSpell();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FString SpellName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	ESpellType SpellType = ESpellType::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -25,7 +25,7 @@ public:
 	TSubclassOf<AWeapon_Base> Weapon_Class;
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxCollider;
 
 	UPROPERTY(EditDefaultsOnly)
