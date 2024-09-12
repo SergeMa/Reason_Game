@@ -53,6 +53,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(Weapon_AttackAction, ETriggerEvent::Triggered, this, &Super::Weapon_Attack);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
 		EnhancedInputComponent->BindAction(DropAction, ETriggerEvent::Started, this, &APlayerCharacter::DropWeapon);
+		EnhancedInputComponent->BindAction(ChangeCameraLengthAction, ETriggerEvent::Started, this, &APlayerCharacter::ChangeCameraLength);
 	}
 }
 
@@ -150,7 +151,7 @@ void APlayerCharacter::SwitchToRun()
 	SetMoveSpeed(ECharacterMovementSpeed::Run);
 }
 
-void APlayerCharacter::SwitchCameraLength()
+void APlayerCharacter::ChangeCameraLength()
 {
 	float SpringArmLength = SpringArm->TargetArmLength;
 	if (SpringArmLength == 0) {

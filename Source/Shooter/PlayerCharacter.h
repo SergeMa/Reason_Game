@@ -77,6 +77,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* DropAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* ChangeCameraLengthAction;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void JumpFunction(const FInputActionValue& Value);
@@ -92,7 +95,7 @@ private:
 	void SwitchToRun();
 
 	UFUNCTION(BlueprintCallable)
-	void SwitchCameraLength();
+	void ChangeCameraLength();
 
 	void Interact() override;
 };
