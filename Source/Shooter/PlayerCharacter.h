@@ -11,6 +11,7 @@
  */
 class UInputAction;
 class UInputMappingContext;
+class ASpell_Base;
 
 UCLASS()
 class SHOOTER_API APlayerCharacter : public ACharacter_Base
@@ -29,8 +30,15 @@ protected:
 
 
 public:
+	virtual void Tick(float DeltaTime) override;
+
 	void Weapon_Equip() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
+	TArray<TSubclassOf<ASpell_Base>> KnownSpellClasses;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
+	TArray<AWeapon_Base*> WeaponList;
 
 protected:
 	void DropWeapon() override;
@@ -63,9 +71,6 @@ private:
 	UInputAction* JumpAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	UInputAction* Weapon_Melee_EquipAction;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* Weapon_AttackAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -80,10 +85,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* ChangeCameraLengthAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* EquipWeaponAction;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void JumpFunction(const FInputActionValue& Value);
-
 
 	UFUNCTION()
 	AActor* CheckForInteractable();
@@ -97,5 +104,11 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void ChangeCameraLength();
 
+	UFUNCTION()
+	void EquipWeaponWithIndex(const FInputActionValue& Value);
+
 	void Interact() override;
+
+	UFUNCTION(BlueprintCallable)
+	void CastSpell();
 };
