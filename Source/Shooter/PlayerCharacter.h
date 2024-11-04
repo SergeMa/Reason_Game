@@ -30,6 +30,8 @@ protected:
 
 
 public:
+	virtual void Tick(float DeltaTime) override;
+
 	void Weapon_Equip() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
@@ -106,4 +108,7 @@ private:
 	void EquipWeaponWithIndex(const FInputActionValue& Value);
 
 	void Interact() override;
+
+	UFUNCTION(BlueprintCallable)
+	void CastSpell();
 };

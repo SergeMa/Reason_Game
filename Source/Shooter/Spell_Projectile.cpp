@@ -34,18 +34,22 @@ ASpell_Projectile::ASpell_Projectile()
 void ASpell_Projectile::BeginPlay()
 {
 	Super::BeginPlay();
-	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ASpell_Projectile::OnCollisionEnter);
 }
 
 void ASpell_Projectile::OnCollisionEnter(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!CasterCharacter) return;
+	if (!CasterCharacter || OtherActor == CasterCharacter) return;
 
-	if (CasterCharacter && OtherActor == CasterCharacter) return;
+	if (GEngine) 
+	{
+		FString Message = FString::Printf(TEXT("Collided with: %s, CasterChar: %s"), *OtherActor->GetName(), *CasterCharacter->GetName());
+		GEngine->AddOnScreenDebugMessage(1, 30, FColor::Black, Message);
+	}
 
 	if (ACharacter_Base* HitChar = Cast<ACharacter_Base>(OtherActor)) {
 		DealDamage(HitChar);
 	}
+
 	if (SpellHitVisual) {
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpellHitVisual, GetActorTransform());
 	}
@@ -65,6 +69,7 @@ void ASpell_Projectile::InitializeProjectile(ACharacter_Base* CasterCharacterInp
 {
 	Damage = DamageInput;
 	CasterCharacter = CasterCharacterInput;
+	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ASpell_Projectile::OnCollisionEnter);
 }
 
 // Called every frame

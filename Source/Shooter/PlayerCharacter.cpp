@@ -52,6 +52,8 @@ void APlayerCharacter::BeginPlay()
 	}
 
 	Weapon = WeaponList[0];
+
+	SwitchToRun();
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -62,14 +64,19 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::JumpFunction);
-		EnhancedInputComponent->BindAction(ChangeWalkSpeedAction, ETriggerEvent::Started, this, &APlayerCharacter::SwitchToRun);
-		EnhancedInputComponent->BindAction(ChangeWalkSpeedAction, ETriggerEvent::Completed, this, &APlayerCharacter::SwitchToWalk);
+		EnhancedInputComponent->BindAction(ChangeWalkSpeedAction, ETriggerEvent::Started, this, &APlayerCharacter::SwitchToWalk);
+		EnhancedInputComponent->BindAction(ChangeWalkSpeedAction, ETriggerEvent::Completed, this, &APlayerCharacter::SwitchToRun);
 		EnhancedInputComponent->BindAction(Weapon_AttackAction, ETriggerEvent::Triggered, this, &Super::Weapon_Attack);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
 		EnhancedInputComponent->BindAction(DropAction, ETriggerEvent::Started, this, &APlayerCharacter::DropWeapon);
 		EnhancedInputComponent->BindAction(ChangeCameraLengthAction, ETriggerEvent::Started, this, &APlayerCharacter::ChangeCameraLength);
 		EnhancedInputComponent->BindAction(EquipWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::EquipWeaponWithIndex);
 	}
+}
+
+void APlayerCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
 
 void APlayerCharacter::Weapon_Equip()
@@ -182,6 +189,11 @@ void APlayerCharacter::ChangeCameraLength()
 
 void APlayerCharacter::EquipWeaponWithIndex(const FInputActionValue& Value)
 {
+	if (bIsAttacking)
+	{
+		return;
+	}
+
 	const float WeaponIndex = Value.Get<float>() - 1;
 	if (Weapon == WeaponList[WeaponIndex])
 	{
@@ -221,4 +233,12 @@ void APlayerCharacter::Interact()
 		}
 		Interactable->Interact();
 	};
+}
+
+void APlayerCharacter::CastSpell()
+{
+	ASpell_Base* SpellWeapon = Cast<ASpell_Base>(Weapon);
+	if (SpellWeapon == nullptr || GetCharacterMovement()->IsFalling()) return;
+
+	SpellWeapon->CastSpell();
 }
