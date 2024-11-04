@@ -82,13 +82,21 @@ void ACharacter_Base::Weapon_Equip()
 	if (WeaponTypeEquipped == Weapon->GetWeaponType())
 	{
 		WeaponTypeEquipped = EWeaponType::WT_None;
+		if (Weapon->GetWeaponType() == EWeaponType::WT_Magic)
+		{
+			Weapon_Disarm_Attach();
+		}
 	}
 	else
 	{
 		WeaponTypeEquipped = Weapon->GetWeaponType();
+		if (Weapon->GetWeaponType() == EWeaponType::WT_Magic)
+		{
+			Weapon_Equip_Attach();
+		}
 	}
 
-	if (WeaponTypeEquipped != EWeaponType::WT_Magic)
+	if (Weapon->GetWeaponType() != EWeaponType::WT_Magic)
 	{
 		NullifyWalkSpeed();
 	}

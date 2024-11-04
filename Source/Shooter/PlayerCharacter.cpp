@@ -11,6 +11,7 @@
 #include "Weapon_Base.h"
 #include "Weapon_Pickup.h"
 #include "IInteractable.h"
+#include "Spell_Base.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -29,7 +30,8 @@ APlayerCharacter::APlayerCharacter()
 
 void APlayerCharacter::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
+
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -37,6 +39,19 @@ void APlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(MovementInputMappingContext, 0);
 		}
 	}
+
+	WeaponList.Add(Weapon);
+
+	for (int i = 0; i < KnownSpellClasses.Num(); i++)
+	{
+		ASpell_Base* Spell = GetWorld()->SpawnActor<ASpell_Base>(KnownSpellClasses[i]);
+		Spell->SetOwner(this);
+		Weapon = Spell;
+		WeaponList.Add(Spell);
+		Weapon_Disarm_Attach();
+	}
+
+	Weapon = WeaponList[0];
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -47,20 +62,22 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::JumpFunction);
-		EnhancedInputComponent->BindAction(Weapon_Melee_EquipAction, ETriggerEvent::Started, this, &APlayerCharacter::Weapon_Equip);
 		EnhancedInputComponent->BindAction(ChangeWalkSpeedAction, ETriggerEvent::Started, this, &APlayerCharacter::SwitchToRun);
 		EnhancedInputComponent->BindAction(ChangeWalkSpeedAction, ETriggerEvent::Completed, this, &APlayerCharacter::SwitchToWalk);
 		EnhancedInputComponent->BindAction(Weapon_AttackAction, ETriggerEvent::Triggered, this, &Super::Weapon_Attack);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
 		EnhancedInputComponent->BindAction(DropAction, ETriggerEvent::Started, this, &APlayerCharacter::DropWeapon);
 		EnhancedInputComponent->BindAction(ChangeCameraLengthAction, ETriggerEvent::Started, this, &APlayerCharacter::ChangeCameraLength);
+		EnhancedInputComponent->BindAction(EquipWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::EquipWeaponWithIndex);
 	}
 }
 
 void APlayerCharacter::Weapon_Equip()
 {
-	
-	if (Weapon == nullptr || GetCharacterMovement()->IsFalling() || Weapon->GetWeaponType() == EWeaponType::WT_None) return;
+	if (Weapon == nullptr || GetCharacterMovement()->IsFalling() || Weapon->GetWeaponType() == EWeaponType::WT_None)
+	{
+		return;
+	}
 	
 	if (WeaponTypeEquipped == Weapon->GetWeaponType()) //Weapon is being Disarmed
 	{
@@ -160,6 +177,29 @@ void APlayerCharacter::ChangeCameraLength()
 	else
 	{
 		SpringArm->TargetArmLength = 0;
+	}
+}
+
+void APlayerCharacter::EquipWeaponWithIndex(const FInputActionValue& Value)
+{
+	const float WeaponIndex = Value.Get<float>() - 1;
+	if (Weapon == WeaponList[WeaponIndex])
+	{
+		Weapon_Equip(); // Unequips Weapon
+		return;
+	}
+
+	if (WeaponIndex < WeaponList.Num())
+	{
+		FTimerHandle WeaponEquipTimer;
+		if (WeaponTypeEquipped != EWeaponType::WT_None)
+		{
+			WeaponTypeEquipped = EWeaponType::WT_None;
+			SpringArm->AddRelativeLocation(FVector(0, -20, 0));
+			Weapon_Disarm_Attach();
+		}
+		Weapon = WeaponList[WeaponIndex];
+		GetWorld()->GetTimerManager().SetTimer(WeaponEquipTimer, this, &APlayerCharacter::Weapon_Equip, 1.f, false);
 	}
 }
 
