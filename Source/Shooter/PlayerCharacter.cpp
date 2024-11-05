@@ -237,8 +237,11 @@ void APlayerCharacter::Interact()
 
 void APlayerCharacter::CastSpell()
 {
-	ASpell_Base* SpellWeapon = Cast<ASpell_Base>(Weapon);
-	if (SpellWeapon == nullptr || GetCharacterMovement()->IsFalling()) return;
+	if (!bIsAttacking || GetCharacterMovement()->IsFalling() || GetCharacterMovement()->MaxWalkSpeed != 0 || 
+		WeaponTypeEquipped != EWeaponType::WT_Magic) return;
 
-	SpellWeapon->CastSpell();
+	if (ASpell_Base* SpellWeapon = Cast<ASpell_Base>(Weapon))
+	{
+		SpellWeapon->CastSpell();
+	}
 }
