@@ -203,15 +203,20 @@ void APlayerCharacter::EquipWeaponWithIndex(const FInputActionValue& Value)
 
 	if (WeaponIndex < WeaponList.Num())
 	{
-		FTimerHandle WeaponEquipTimer;
 		if (WeaponTypeEquipped != EWeaponType::WT_None)
 		{
 			WeaponTypeEquipped = EWeaponType::WT_None;
 			SpringArm->AddRelativeLocation(FVector(0, -20, 0));
 			Weapon_Disarm_Attach();
+			Weapon = WeaponList[WeaponIndex];
+			FTimerHandle WeaponEquipTimer;
+			GetWorld()->GetTimerManager().SetTimer(WeaponEquipTimer, this, &APlayerCharacter::Weapon_Equip, 1.f, false);
 		}
-		Weapon = WeaponList[WeaponIndex];
-		GetWorld()->GetTimerManager().SetTimer(WeaponEquipTimer, this, &APlayerCharacter::Weapon_Equip, 1.f, false);
+		else
+		{
+			Weapon = WeaponList[WeaponIndex];
+			Weapon_Equip();
+		}
 	}
 }
 
