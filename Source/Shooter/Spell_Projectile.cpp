@@ -2,13 +2,14 @@
 
 
 #include "Spell_Projectile.h"
-#include "Components/BoxComponent.h"
-#include "Particles/ParticleSystemComponent.h"
-#include "Engine/DamageEvents.h"
-#include "Kismet/GameplayStatics.h"
+#include "Components\BoxComponent.h"
+#include "Particles\ParticleSystemComponent.h"
+#include "Engine\DamageEvents.h"
+#include "Kismet\GameplayStatics.h"
 #include "Character_Base.h"
 #include "Spell_Base.h"
-#include "GameFramework/ProjectileMovementComponent.h"
+#include "Components\StaticMeshComponent.h"
+#include "GameFramework\ProjectileMovementComponent.h"
 
 // Sets default values
 ASpell_Projectile::ASpell_Projectile()
@@ -18,6 +19,10 @@ ASpell_Projectile::ASpell_Projectile()
 
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	RootComponent = BoxCollider;
+
+	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
+	ProjectileMesh->SetupAttachment(BoxCollider);
+
 	SpellVisuals = CreateDefaultSubobject<UParticleSystemComponent>("Visuals");
 	SpellVisuals->SetupAttachment(BoxCollider);
 
@@ -48,6 +53,7 @@ void ASpell_Projectile::OnCollisionEnter(UPrimitiveComponent* OverlappedComp, AA
 
 	if (ACharacter_Base* HitChar = Cast<ACharacter_Base>(OtherActor)) {
 		DealDamage(HitChar);
+		SpellAfterEffect(HitChar);
 	}
 
 	if (SpellHitVisual) {
@@ -70,6 +76,11 @@ void ASpell_Projectile::InitializeProjectile(ACharacter_Base* CasterCharacterInp
 	Damage = DamageInput;
 	CasterCharacter = CasterCharacterInput;
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ASpell_Projectile::OnCollisionEnter);
+}
+
+void ASpell_Projectile::SpellAfterEffect_Implementation(ACharacter_Base* Victim)
+{
+
 }
 
 // Called every frame

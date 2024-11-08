@@ -2,16 +2,18 @@
 
 
 #include "PlayerCharacter.h"
-#include "Components/SphereComponent.h"
+#include "Components\SphereComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework\SpringArmComponent.h"
+#include "Camera\CameraComponent.h"
+#include "GameFramework\CharacterMovementComponent.h"
 #include "Weapon_Base.h"
 #include "Weapon_Pickup.h"
 #include "IInteractable.h"
 #include "Spell_Base.h"
+#include "UI\PlayerWidget.h"
+#include "Components\WidgetComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -37,6 +39,15 @@ void APlayerCharacter::BeginPlay()
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(MovementInputMappingContext, 0);
+		}
+	}
+
+	if (PlayerWidgetClass)
+	{
+		if (PlayerWidget = CreateWidget<UPlayerWidget>(GetWorld()->GetFirstPlayerController(), PlayerWidgetClass))
+		{
+			PlayerWidget->AddToViewport();
+			PlayerWidget->SetValues(Health, MaxHealth);
 		}
 	}
 
@@ -66,7 +77,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::JumpFunction);
 		EnhancedInputComponent->BindAction(ChangeWalkSpeedAction, ETriggerEvent::Started, this, &APlayerCharacter::SwitchToWalk);
 		EnhancedInputComponent->BindAction(ChangeWalkSpeedAction, ETriggerEvent::Completed, this, &APlayerCharacter::SwitchToRun);
-		EnhancedInputComponent->BindAction(Weapon_AttackAction, ETriggerEvent::Triggered, this, &Super::Weapon_Attack);
+		EnhancedInputComponent->BindAction(Weapon_AttackAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Weapon_Attack);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
 		EnhancedInputComponent->BindAction(DropAction, ETriggerEvent::Started, this, &APlayerCharacter::DropWeapon);
 		EnhancedInputComponent->BindAction(ChangeCameraLengthAction, ETriggerEvent::Started, this, &APlayerCharacter::ChangeCameraLength);
@@ -85,7 +96,7 @@ void APlayerCharacter::Weapon_Equip()
 	{
 		return;
 	}
-	
+
 	if (WeaponTypeEquipped == Weapon->GetWeaponType()) //Weapon is being Disarmed
 	{
 		SpringArm->AddRelativeLocation(FVector(0, -20, 0));
@@ -94,19 +105,19 @@ void APlayerCharacter::Weapon_Equip()
 	{
 		SpringArm->AddRelativeLocation(FVector(0, 20, 0));
 	}
-	
+
 	Super::Weapon_Equip();
 }
 
 void APlayerCharacter::DropWeapon()
 {
 	if (!IsDead() && (!Weapon || bIsAttacking || GetCharacterMovement()->MaxWalkSpeed == 0))	return;
-	
+
 	if (WeaponTypeEquipped != EWeaponType::WT_None)
 	{
 		SpringArm->AddRelativeLocation(FVector(0, -20, 0));
 	}
-	
+
 	Super::DropWeapon();
 }
 
@@ -137,7 +148,7 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 void APlayerCharacter::JumpFunction(const FInputActionValue& Value)
 {
 	if (GetCharacterMovement()->IsFalling())	return;
-	
+
 	Jump();
 }
 
@@ -187,6 +198,16 @@ void APlayerCharacter::ChangeCameraLength()
 	}
 }
 
+float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	int DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (PlayerWidget)
+	{
+		PlayerWidget->SetValues(Health, MaxHealth);
+	}
+	return DamageApplied;
+}
+
 void APlayerCharacter::EquipWeaponWithIndex(const FInputActionValue& Value)
 {
 	if (bIsAttacking)
@@ -203,15 +224,20 @@ void APlayerCharacter::EquipWeaponWithIndex(const FInputActionValue& Value)
 
 	if (WeaponIndex < WeaponList.Num())
 	{
-		FTimerHandle WeaponEquipTimer;
 		if (WeaponTypeEquipped != EWeaponType::WT_None)
 		{
 			WeaponTypeEquipped = EWeaponType::WT_None;
 			SpringArm->AddRelativeLocation(FVector(0, -20, 0));
 			Weapon_Disarm_Attach();
+			Weapon = WeaponList[WeaponIndex];
+			FTimerHandle WeaponEquipTimer;
+			GetWorld()->GetTimerManager().SetTimer(WeaponEquipTimer, this, &APlayerCharacter::Weapon_Equip, 1.f, false);
 		}
-		Weapon = WeaponList[WeaponIndex];
-		GetWorld()->GetTimerManager().SetTimer(WeaponEquipTimer, this, &APlayerCharacter::Weapon_Equip, 1.f, false);
+		else
+		{
+			Weapon = WeaponList[WeaponIndex];
+			Weapon_Equip();
+		}
 	}
 }
 
@@ -237,8 +263,11 @@ void APlayerCharacter::Interact()
 
 void APlayerCharacter::CastSpell()
 {
-	ASpell_Base* SpellWeapon = Cast<ASpell_Base>(Weapon);
-	if (SpellWeapon == nullptr || GetCharacterMovement()->IsFalling()) return;
+	if (!bIsAttacking || GetCharacterMovement()->IsFalling() || GetCharacterMovement()->MaxWalkSpeed != 0 ||
+		WeaponTypeEquipped != EWeaponType::WT_Magic) return;
 
-	SpellWeapon->CastSpell();
+	if (ASpell_Base* SpellWeapon = Cast<ASpell_Base>(Weapon))
+	{
+		SpellWeapon->CastSpell();
+	}
 }

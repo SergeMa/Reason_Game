@@ -8,6 +8,7 @@
 
 class ACharacter_Base;
 class UParticleSystemComponent;
+class UStaticMeshComponent;
 class UProjectileMovementComponent;
 
 UCLASS()
@@ -28,6 +29,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxCollider;
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* ProjectileMesh;
 
 	UPROPERTY(EditDefaultsOnly)
 	UParticleSystemComponent* SpellVisuals;
@@ -53,4 +57,7 @@ protected:
 public:
 	UFUNCTION()
 	void InitializeProjectile(ACharacter_Base* CasterCharacterInput, float DamageInput);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SpellAfterEffect(ACharacter_Base* Victim);
 };
