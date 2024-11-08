@@ -12,6 +12,8 @@
 class UInputAction;
 class UInputMappingContext;
 class ASpell_Base;
+class UPlayerWidget;
+class UWidgetComponent;
 
 UCLASS()
 class SHOOTER_API APlayerCharacter : public ACharacter_Base
@@ -88,6 +90,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* EquipWeaponAction;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UPlayerWidget> PlayerWidgetClass;
+	
+	UPROPERTY()
+	TObjectPtr<UPlayerWidget> PlayerWidget;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void JumpFunction(const FInputActionValue& Value);
@@ -103,6 +111,8 @@ private:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeCameraLength();
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION()
 	void EquipWeaponWithIndex(const FInputActionValue& Value);
