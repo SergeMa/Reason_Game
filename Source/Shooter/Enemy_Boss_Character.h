@@ -14,6 +14,10 @@ UCLASS()
 class SHOOTER_API AEnemy_Boss_Character : public APlayerCharacter
 {
 	GENERATED_BODY()
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 	
 public:
 	UPROPERTY(EditAnywhere)

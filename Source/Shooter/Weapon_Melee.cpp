@@ -18,6 +18,10 @@ void AWeapon_Melee::HandleCollision()
     CollisionParams.AddIgnoredActor(GetOwner());
 
     bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Pawn, CollisionParams);
+    if (GEngine)
+    {
+        DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1.0f, 0, 2.0f);
+    }
 
     if (bHit)
     {
