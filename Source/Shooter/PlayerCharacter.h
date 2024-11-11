@@ -39,7 +39,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
 	TArray<TSubclassOf<ASpell_Base>> KnownSpellClasses;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapons")
 	TArray<AWeapon_Base*> WeaponList;
 
 protected:

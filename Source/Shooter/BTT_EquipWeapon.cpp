@@ -2,7 +2,7 @@
 
 
 #include "BTT_EquipWeapon.h"
-#include "Enemy_Base.h"
+#include "Character_Base.h"
 #include "AIController.h"
 
 UBTT_EquipWeapon::UBTT_EquipWeapon()
@@ -14,7 +14,7 @@ EBTNodeResult::Type UBTT_EquipWeapon::ExecuteTask(UBehaviorTreeComponent& OwnerC
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 	if (OwnerComp.GetAIOwner() == nullptr) return EBTNodeResult::Failed;
-	AEnemy_Base* OwnerChar = Cast<AEnemy_Base>(OwnerComp.GetAIOwner()->GetPawn());
+	ACharacter_Base* OwnerChar = Cast<ACharacter_Base>(OwnerComp.GetAIOwner()->GetPawn());
 	if (OwnerChar)
 	{
 		OwnerChar->Weapon_Equip();
