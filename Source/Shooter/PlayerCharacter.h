@@ -42,6 +42,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapons")
 	TArray<AWeapon_Base*> WeaponList;
 
+	virtual void Die() override;
+
 protected:
 	void DropWeapon() override;
 

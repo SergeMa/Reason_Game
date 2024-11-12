@@ -65,6 +65,7 @@ void APlayerCharacter::BeginPlay()
 	Weapon = WeaponList[0];
 
 	SwitchToRun();
+	ChangeCameraLength();
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -107,6 +108,16 @@ void APlayerCharacter::Weapon_Equip()
 	}
 
 	Super::Weapon_Equip();
+}
+
+void APlayerCharacter::Die()
+{
+	for (int i = 1; i < WeaponList.Num(); i++)
+	{
+		WeaponList[i]->Destroy();
+	}
+
+	Super::Die();
 }
 
 void APlayerCharacter::DropWeapon()

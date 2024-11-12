@@ -21,7 +21,6 @@ ACharacter_Base::ACharacter_Base()
 void ACharacter_Base::BeginPlay()
 {
 	Super::BeginPlay();
-
 	MovementHelper::InitializeMovementSpeedMap();
 
 	if (Weapon_Class)
@@ -31,6 +30,7 @@ void ACharacter_Base::BeginPlay()
 		Weapon_Disarm_Attach();
 	}
 
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	SetMoveSpeed(LastMoveSpeed);
 	Health = MaxHealth;
 }
@@ -51,6 +51,21 @@ void ACharacter_Base::Tick(float DeltaTime)
 	}
 }
 
+void ACharacter_Base::Die()
+{
+	DropWeapon();
+
+	GetCharacterMovement()->DisableMovement();
+	GetCharacterMovement()->StopMovementImmediately();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->WakeAllRigidBodies();
+
+	DetachFromControllerPendingDestroy();
+}
+
 float ACharacter_Base::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
@@ -60,17 +75,7 @@ float ACharacter_Base::TakeDamage(float DamageAmount, FDamageEvent const& Damage
 
 	if (IsDead())
 	{
-		DropWeapon();
-
-		GetCharacterMovement()->DisableMovement();
-		GetCharacterMovement()->StopMovementImmediately();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-		GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
-		GetMesh()->SetSimulatePhysics(true);
-		GetMesh()->WakeAllRigidBodies();
-
-		DetachFromControllerPendingDestroy();
+		Die();
 	}
 	return DamageApplied;
 }

@@ -16,6 +16,12 @@ AWeapon_Base::AWeapon_Base()
 	WeaponMesh->SetupAttachment(RootComponent);
 }
 
+void AWeapon_Base::BeginPlay()
+{
+	Super::BeginPlay();
+	WeaponMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+}
+
 USkeletalMeshComponent* AWeapon_Base::GetWeaponMesh() const
 {
 	return WeaponMesh;
