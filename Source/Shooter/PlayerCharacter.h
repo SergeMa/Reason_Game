@@ -39,7 +39,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
 	TArray<TSubclassOf<ASpell_Base>> KnownSpellClasses;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapons")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapons")
 	TArray<AWeapon_Base*> WeaponList;
 
 	virtual void Die() override;
@@ -116,8 +116,10 @@ private:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
-	UFUNCTION()
-	void EquipWeaponWithIndex(const FInputActionValue& Value);
+	void EquipWeaponWithIndexAction(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
+	void EquipWeaponWithIndex(int WeaponIndex);
 
 	void Interact() override;
 
