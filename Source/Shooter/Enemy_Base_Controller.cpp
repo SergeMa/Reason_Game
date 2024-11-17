@@ -13,6 +13,7 @@
 #include "Perception/AISense_Hearing.h"
 #include "Perception/AISense_Damage.h"
 #include "Enemy_Base.h"
+#include "Enemy_Boss_Character.h"
 
 void AEnemy_Base_Controller::OnPossess(APawn* InPawn)
 {
@@ -22,10 +23,16 @@ void AEnemy_Base_Controller::OnPossess(APawn* InPawn)
 		RunBehaviorTree(AIBehaviorTree);
 		BlackboardComp = GetBlackboardComponent();
 
-		AEnemy_Base* EnemyPawn = Cast<AEnemy_Base>(GetPawn());
-
-		BlackboardComp->SetValueAsFloat(TEXT("AttackRadius"), EnemyPawn->AttackRadius);
-		BlackboardComp->SetValueAsFloat(TEXT("DefendRadius"), EnemyPawn->DefenceRadius);
+		if (AEnemy_Base* EnemyPawn = Cast<AEnemy_Base>(GetPawn()))
+		{
+			BlackboardComp->SetValueAsFloat(TEXT("AttackRadius"), EnemyPawn->AttackRadius);
+			BlackboardComp->SetValueAsFloat(TEXT("DefendRadius"), EnemyPawn->DefenceRadius);
+		}
+		else if (AEnemy_Boss_Character* EnemyBoss = Cast<AEnemy_Boss_Character>(GetPawn()))
+		{
+			BlackboardComp->SetValueAsFloat(TEXT("AttackRadius"), EnemyBoss->AttackRadius);
+			BlackboardComp->SetValueAsFloat(TEXT("DefendRadius"), EnemyBoss->DefenceRadius);
+		}
 	}
 
 	if (GetPerceptionComponent())
@@ -127,7 +134,8 @@ void AEnemy_Base_Controller::OnPerceptionUpdated(const TArray<AActor*>& UpdatedA
 void AEnemy_Base_Controller::HandleSenseSight(AActor* SensedActor)
 {
 	if (BlackboardComp->GetValueAsEnum("State") == (uint8)EEnemyAIState::Combat 
-		|| BlackboardComp->GetValueAsEnum("State") == (uint8)EEnemyAIState::Stunned || Cast<AEnemy_Base>(SensedActor))	return;
+		|| BlackboardComp->GetValueAsEnum("State") == (uint8)EEnemyAIState::Stunned || Cast<AEnemy_Base>(SensedActor)
+		|| Cast<AEnemy_Boss_Character>(SensedActor))	return;
 
 	SetStateAsCombat(SensedActor);
 }

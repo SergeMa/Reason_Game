@@ -43,6 +43,9 @@ public:
 	bool IsDead();
 
 	UFUNCTION(BlueprintCallable)
+	virtual void Die();
+
+	UFUNCTION(BlueprintCallable)
 	void Weapon_Attack();
 
 	UFUNCTION()

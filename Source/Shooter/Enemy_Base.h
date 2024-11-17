@@ -22,7 +22,7 @@ public:
 	AAI_PatrolRoute* GetPatrolRoute() override;
 
 	UPROPERTY(EditAnywhere)
-	float AttackRadius = 200;
+	float AttackRadius = 150;
 
 	UPROPERTY(EditAnywhere)
 	float DefenceRadius = 400;

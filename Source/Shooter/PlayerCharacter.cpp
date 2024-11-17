@@ -65,6 +65,7 @@ void APlayerCharacter::BeginPlay()
 	Weapon = WeaponList[0];
 
 	SwitchToRun();
+	ChangeCameraLength();
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -81,7 +82,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
 		EnhancedInputComponent->BindAction(DropAction, ETriggerEvent::Started, this, &APlayerCharacter::DropWeapon);
 		EnhancedInputComponent->BindAction(ChangeCameraLengthAction, ETriggerEvent::Started, this, &APlayerCharacter::ChangeCameraLength);
-		EnhancedInputComponent->BindAction(EquipWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::EquipWeaponWithIndex);
+		EnhancedInputComponent->BindAction(EquipWeaponAction, ETriggerEvent::Started, this, &APlayerCharacter::EquipWeaponWithIndexAction);
 	}
 }
 
@@ -109,6 +110,16 @@ void APlayerCharacter::Weapon_Equip()
 	Super::Weapon_Equip();
 }
 
+void APlayerCharacter::Die()
+{
+	for (int i = 1; i < WeaponList.Num(); i++)
+	{
+		WeaponList[i]->Destroy();
+	}
+
+	Super::Die();
+}
+
 void APlayerCharacter::DropWeapon()
 {
 	if (!IsDead() && (!Weapon || bIsAttacking || GetCharacterMovement()->MaxWalkSpeed == 0))	return;
@@ -117,7 +128,7 @@ void APlayerCharacter::DropWeapon()
 	{
 		SpringArm->AddRelativeLocation(FVector(0, -20, 0));
 	}
-
+	WeaponList[0] = nullptr;
 	Super::DropWeapon();
 }
 
@@ -208,7 +219,7 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 	return DamageApplied;
 }
 
-void APlayerCharacter::EquipWeaponWithIndex(const FInputActionValue& Value)
+void APlayerCharacter::EquipWeaponWithIndexAction(const FInputActionValue& Value)
 {
 	if (bIsAttacking)
 	{
@@ -216,6 +227,11 @@ void APlayerCharacter::EquipWeaponWithIndex(const FInputActionValue& Value)
 	}
 
 	const float WeaponIndex = Value.Get<float>() - 1;
+	EquipWeaponWithIndex(WeaponIndex);
+}
+
+void APlayerCharacter::EquipWeaponWithIndex(int WeaponIndex)
+{
 	if (Weapon == WeaponList[WeaponIndex])
 	{
 		Weapon_Equip(); // Unequips Weapon
@@ -252,9 +268,10 @@ void APlayerCharacter::Interact()
 				return;
 			}
 
-			DropWeapon();
+			//DropWeapon();
 			Weapon = GetWorld()->SpawnActor<AWeapon_Base>(WP_Interactable->Weapon_Class);
 			Weapon->SetOwner(this);
+			WeaponList[0] = Weapon;
 			Super::Weapon_Disarm_Attach();
 		}
 		Interactable->Interact();

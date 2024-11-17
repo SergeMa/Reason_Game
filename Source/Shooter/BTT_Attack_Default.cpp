@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings
 #include "BTT_Attack_Default.h"
-#include "Enemy_Base.h"
+#include "Character_Base.h"
 #include "AIController.h"
 
 UBTT_Attack_Default::UBTT_Attack_Default()
@@ -13,7 +13,7 @@ EBTNodeResult::Type UBTT_Attack_Default::ExecuteTask(UBehaviorTreeComponent& Own
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 	bNotifyTick = 1;
 
-	AEnemy_Base* OwnerChar = Cast<AEnemy_Base>(OwnerComp.GetAIOwner()->GetPawn());
+	ACharacter_Base* OwnerChar = Cast<ACharacter_Base>(OwnerComp.GetAIOwner()->GetPawn());
 	if (OwnerChar && OwnerChar->bIsAttacking)	return EBTNodeResult::Failed;
 
 	OwnerChar->Weapon_Attack();
@@ -23,7 +23,7 @@ EBTNodeResult::Type UBTT_Attack_Default::ExecuteTask(UBehaviorTreeComponent& Own
 void UBTT_Attack_Default::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
-	AEnemy_Base* OwnerChar = Cast<AEnemy_Base>(OwnerComp.GetAIOwner()->GetPawn());
+	ACharacter_Base* OwnerChar = Cast<ACharacter_Base>(OwnerComp.GetAIOwner()->GetPawn());
 	if (OwnerChar && OwnerChar->bIsAttacking == false)
 	{
 		FinishLatentTask(OwnerComp,EBTNodeResult::Succeeded);
