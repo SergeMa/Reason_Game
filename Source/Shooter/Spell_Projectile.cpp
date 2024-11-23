@@ -39,7 +39,6 @@ ASpell_Projectile::ASpell_Projectile()
 void ASpell_Projectile::BeginPlay()
 {
 	Super::BeginPlay();
-
 	BoxCollider->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 }
 
@@ -77,12 +76,13 @@ void ASpell_Projectile::InitializeProjectile(ACharacter_Base* CasterCharacterInp
 {
 	Damage = DamageInput;
 	CasterCharacter = CasterCharacterInput;
+	//SetActorRotation(CasterCharacter->GetActorForwardVector().Rotation());
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ASpell_Projectile::OnCollisionEnter);
 }
 
 void ASpell_Projectile::SpellAfterEffect_Implementation(ACharacter_Base* Victim)
 {
-
+	//Event declared in Blueprint
 }
 
 // Called every frame

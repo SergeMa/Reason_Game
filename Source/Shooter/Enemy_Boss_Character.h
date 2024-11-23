@@ -21,19 +21,25 @@ protected:
 	
 public:
 	UPROPERTY(EditAnywhere)
-	float AttackRadius = 100;
+	float AttackMeleeRadius = 100;
 
 	UPROPERTY(EditAnywhere)
-	float DefenceRadius = 200;
+	float DefenceMeleeRadius = 200;
+
+	UPROPERTY(EditAnywhere)
+	float AttackRangedRadius = 400;
+
+	UPROPERTY(EditAnywhere)
+	float DefenceRangedRadius = 500;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int CurrentStage = 0;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void ChangeStage(int StageNum);
 
-	/*
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
-	TArray<TSubclassOf<ASpell_Base>> KnownSpellClasses_Stage2;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
-	TArray<TSubclassOf<ASpell_Base>> KnownSpellClasses_Stage3;
-	*/
+	UFUNCTION(BlueprintCallable)
+	void HandleStageTransition();
+protected:
+	void EquipWeaponWithIndex(int WeaponIndex) override;
 };

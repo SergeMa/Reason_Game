@@ -49,6 +49,9 @@ protected:
 
 	virtual void SetMoveSpeed(ECharacterMovementSpeed MoveSpeedToSet);
 
+	UFUNCTION(BlueprintCallable)
+	virtual void EquipWeaponWithIndex(int WeaponIndex);
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Aditional components")
 	class USphereComponent* CameraHolder;
@@ -117,9 +120,6 @@ private:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	void EquipWeaponWithIndexAction(const FInputActionValue& Value);
-
-	UFUNCTION(BlueprintCallable)
-	void EquipWeaponWithIndex(int WeaponIndex);
 
 	void Interact() override;
 
