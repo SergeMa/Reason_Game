@@ -117,6 +117,12 @@ void APlayerCharacter::Die()
 		WeaponList[i]->Destroy();
 	}
 
+	if (PlayerWidget)
+	{
+		PlayerWidget->RemoveFromViewport();
+		PlayerWidget = nullptr;
+	}
+
 	Super::Die();
 }
 

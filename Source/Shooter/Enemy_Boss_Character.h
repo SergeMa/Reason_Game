@@ -7,9 +7,8 @@
 #include "Enemy_Base.h"
 #include "Enemy_Boss_Character.generated.h"
 
-/**
- * 
- */
+class UBossWidget;
+
 UCLASS()
 class SHOOTER_API AEnemy_Boss_Character : public APlayerCharacter
 {
@@ -40,6 +39,24 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleStageTransition();
+
+	UFUNCTION(BlueprintCallable)
+	void CreateBossWidget();
+
+	UFUNCTION(BlueprintCallable)
+	void DestroyBossWidget();
+
+	virtual void Die() override;
+
 protected:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UBossWidget> BossWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UBossWidget> BossWidget;
+
 	void EquipWeaponWithIndex(int WeaponIndex) override;
+
+private:
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

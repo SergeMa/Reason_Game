@@ -19,4 +19,6 @@ protected:
 
 public:
 	virtual void Tick(float DeltaSeconds) override;
+
+	virtual void SetStateAsCombat(AActor* AttackTarget) override;
 };

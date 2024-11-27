@@ -52,6 +52,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void EquipWeaponWithIndex(int WeaponIndex);
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Aditional components")
 	class USphereComponent* CameraHolder;
@@ -116,8 +118,6 @@ private:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeCameraLength();
-
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	void EquipWeaponWithIndexAction(const FInputActionValue& Value);
 

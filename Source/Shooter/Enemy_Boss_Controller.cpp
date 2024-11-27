@@ -24,3 +24,13 @@ void AEnemy_Boss_Controller::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 }
+
+void AEnemy_Boss_Controller::SetStateAsCombat(AActor* AttackTarget)
+{
+	if (AEnemy_Boss_Character* EnemyBoss = Cast<AEnemy_Boss_Character>(GetPawn()))
+	{
+		EnemyBoss->CreateBossWidget();
+	}
+
+	Super::SetStateAsCombat(AttackTarget);
+}
