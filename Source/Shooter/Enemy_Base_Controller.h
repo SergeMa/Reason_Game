@@ -31,7 +31,7 @@ public:
 	void SetStateAsPassive();
 
 	UFUNCTION(BlueprintCallable)
-	void SetStateAsCombat(AActor* AttackTarget);
+	virtual void SetStateAsCombat(AActor* AttackTarget);
 
 	UFUNCTION(BlueprintCallable)
 	void SetStateAsInvestigating(FVector PointOfInterest);

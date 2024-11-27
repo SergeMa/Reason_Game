@@ -64,10 +64,10 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float MaxHealth = 100;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float Health = 1;
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapons")

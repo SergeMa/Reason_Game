@@ -93,11 +93,11 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 void APlayerCharacter::Weapon_Equip()
 {
+	/*
 	if (Weapon == nullptr || GetCharacterMovement()->IsFalling() || Weapon->GetWeaponType() == EWeaponType::WT_None)
 	{
 		return;
 	}
-
 	if (WeaponTypeEquipped == Weapon->GetWeaponType()) //Weapon is being Disarmed
 	{
 		SpringArm->AddRelativeLocation(FVector(0, -20, 0));
@@ -106,7 +106,7 @@ void APlayerCharacter::Weapon_Equip()
 	{
 		SpringArm->AddRelativeLocation(FVector(0, 20, 0));
 	}
-
+	*/
 	Super::Weapon_Equip();
 }
 
@@ -115,6 +115,12 @@ void APlayerCharacter::Die()
 	for (int i = 1; i < WeaponList.Num(); i++)
 	{
 		WeaponList[i]->Destroy();
+	}
+
+	if (PlayerWidget)
+	{
+		PlayerWidget->RemoveFromViewport();
+		PlayerWidget = nullptr;
 	}
 
 	Super::Die();

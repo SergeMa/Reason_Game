@@ -7,9 +7,8 @@
 #include "Enemy_Base.h"
 #include "Enemy_Boss_Character.generated.h"
 
-/**
- * 
- */
+class UBossWidget;
+
 UCLASS()
 class SHOOTER_API AEnemy_Boss_Character : public APlayerCharacter
 {
@@ -21,19 +20,43 @@ protected:
 	
 public:
 	UPROPERTY(EditAnywhere)
-	float AttackRadius = 100;
+	float AttackMeleeRadius = 100;
 
 	UPROPERTY(EditAnywhere)
-	float DefenceRadius = 200;
+	float DefenceMeleeRadius = 200;
+
+	UPROPERTY(EditAnywhere)
+	float AttackRangedRadius = 400;
+
+	UPROPERTY(EditAnywhere)
+	float DefenceRangedRadius = 500;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int CurrentStage = 0;
 
 	UFUNCTION(BlueprintNativeEvent)
 	void ChangeStage(int StageNum);
 
-	/*
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
-	TArray<TSubclassOf<ASpell_Base>> KnownSpellClasses_Stage2;
+	UFUNCTION(BlueprintCallable)
+	void HandleStageTransition();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
-	TArray<TSubclassOf<ASpell_Base>> KnownSpellClasses_Stage3;
-	*/
+	UFUNCTION(BlueprintCallable)
+	void CreateBossWidget();
+
+	UFUNCTION(BlueprintCallable)
+	void DestroyBossWidget();
+
+	virtual void Die() override;
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UBossWidget> BossWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UBossWidget> BossWidget;
+
+	void EquipWeaponWithIndex(int WeaponIndex) override;
+
+private:
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

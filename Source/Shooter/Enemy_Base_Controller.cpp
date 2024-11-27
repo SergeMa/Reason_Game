@@ -28,10 +28,12 @@ void AEnemy_Base_Controller::OnPossess(APawn* InPawn)
 			BlackboardComp->SetValueAsFloat(TEXT("AttackRadius"), EnemyPawn->AttackRadius);
 			BlackboardComp->SetValueAsFloat(TEXT("DefendRadius"), EnemyPawn->DefenceRadius);
 		}
-		else if (AEnemy_Boss_Character* EnemyBoss = Cast<AEnemy_Boss_Character>(GetPawn()))
+		if (AEnemy_Boss_Character* EnemyBoss = Cast<AEnemy_Boss_Character>(GetPawn()))
 		{
-			BlackboardComp->SetValueAsFloat(TEXT("AttackRadius"), EnemyBoss->AttackRadius);
-			BlackboardComp->SetValueAsFloat(TEXT("DefendRadius"), EnemyBoss->DefenceRadius);
+			BlackboardComp->SetValueAsFloat(TEXT("AttackMeleeRadius"), EnemyBoss->AttackMeleeRadius);
+			BlackboardComp->SetValueAsFloat(TEXT("DefendMeleeRadius"), EnemyBoss->DefenceMeleeRadius);
+			BlackboardComp->SetValueAsFloat(TEXT("AttackRangedRadius"), EnemyBoss->AttackRangedRadius);
+			BlackboardComp->SetValueAsFloat(TEXT("DefendRangedRadius"), EnemyBoss->DefenceRangedRadius);
 		}
 	}
 
