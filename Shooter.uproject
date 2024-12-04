@@ -31,5 +31,9 @@
 			"Name": "PCGGeometryScriptInterop",
 			"Enabled": true
 		}
+	],
+	"TargetPlatforms": [
+		"Windows",
+		"Linux"
 	]
 }
