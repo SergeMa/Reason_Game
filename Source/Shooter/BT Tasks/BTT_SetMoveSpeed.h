@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "ECharacterMovementSpeed.h"
+#include "../ECharacterMovementSpeed.h"
 #include "BTT_SetMoveSpeed.generated.h"
 
 /**

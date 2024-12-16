@@ -3,7 +3,7 @@
 
 #include "BTD_HasPatrolRoute.h"
 #include "AIController.h"
-#include "Enemy_Base.h"
+#include "../Enemy_Base.h"
 
 UBTD_HasPatrolRoute::UBTD_HasPatrolRoute()
 {

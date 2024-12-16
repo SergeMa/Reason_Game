@@ -2,7 +2,7 @@
 
 
 #include "BTT_SetStateToPassive.h"
-#include "Enemy_Base_Controller.h"
+#include "../Enemy_Base_Controller.h"
 #include "AIController.h"
 
 UBTT_SetStateToPassive::UBTT_SetStateToPassive()

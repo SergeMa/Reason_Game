@@ -2,8 +2,8 @@
 
 
 #include "BTD_IsWieldingWeapon.h"
-#include "Character_Base.h"
-#include "WeaponType.h"
+#include "../Character_Base.h"
+#include "../WeaponType.h"
 #include "AIController.h"
 
 UBTD_IsWieldingWeapon::UBTD_IsWieldingWeapon()

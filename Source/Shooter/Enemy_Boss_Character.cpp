@@ -85,7 +85,7 @@ void AEnemy_Boss_Character::DestroyBossWidget()
 {
     if (BossWidget)
     {
-        BossWidget->RemoveFromViewport();
+        BossWidget->RemoveFromParent();
         BossWidget = nullptr;
     }
 }

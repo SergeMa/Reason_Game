@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings
 #include "BTT_Attack_Default.h"
-#include "Character_Base.h"
+#include "../Character_Base.h"
 #include "AIController.h"
 
 UBTT_Attack_Default::UBTT_Attack_Default()

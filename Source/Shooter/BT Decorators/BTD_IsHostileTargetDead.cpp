@@ -3,7 +3,7 @@
 
 #include "BTD_IsHostileTargetDead.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Character_Base.h"
+#include "../Character_Base.h"
 
 UBTD_IsHostileTargetDead::UBTD_IsHostileTargetDead()
 {

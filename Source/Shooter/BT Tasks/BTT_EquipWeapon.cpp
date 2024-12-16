@@ -2,7 +2,7 @@
 
 
 #include "BTT_EquipWeapon.h"
-#include "Character_Base.h"
+#include "../Character_Base.h"
 #include "AIController.h"
 
 UBTT_EquipWeapon::UBTT_EquipWeapon()

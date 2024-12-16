@@ -119,7 +119,7 @@ void APlayerCharacter::Die()
 
 	if (PlayerWidget)
 	{
-		PlayerWidget->RemoveFromViewport();
+		PlayerWidget->RemoveFromParent();
 		PlayerWidget = nullptr;
 	}
 
