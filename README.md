@@ -1,6 +1,6 @@
 # Reason
 
-Developed with Unreal Engine 5.4
+RPG game developed with Unreal Engine 5.4
 
 # Game difficulty on start info
 
